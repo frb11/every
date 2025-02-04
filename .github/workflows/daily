@@ -1,0 +1,24 @@
+name: Daily Auto Commit
+
+on:
+  schedule:
+    - cron: '15 12 * * *'  # Runs daily at 12:15 UTC (5:45 PM IST)
+
+jobs:
+  daily_commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: "Daily commit step - 21f3003107@ds.study.iitm.ac.in"
+        run: |
+          echo "Automated commit on $(date)" >> daily_log.txt
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "21f3003107@ds.study.iitm.ac.in"
+          git add daily_log.txt
+          git commit -m "Daily update: $(date)"
+          git push origin main
